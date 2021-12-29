@@ -1,6 +1,8 @@
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class Parser {
@@ -31,9 +33,37 @@ public class Parser {
     // parses a line with comma separated values with no
     // edge cases
     //TODO base cases
-    private String[] parseLineNoEdgeCases(String line) {
-        return line.split(",");
+    private ArrayList<String> parseLineNoEdgeCases(String line) {
+
+        /*String[] parsedLine = line.split(",");
+        ArrayList<String> arrayList = new ArrayList<>();
+
+        // to clean up trailing and leading spaces
+        for (int i = 0; i < parsedLine.length; i++) {
+            parsedLine[i] = parsedLine[i].strip();
+            arrayList.add(parsedLine[i]);
+        }
+        return arrayList;*/
+
+        return untilDelimiter(line);
     }
+
+    /*private ArrayList<String> parseLineEdgeCases(String line) {
+
+        ArrayList<String> returnList = new ArrayList<>();
+        String str = "";
+
+        for(int i = 0; i < line.length(); i++){
+            if(str.charAt(i) != '\"'){
+
+
+
+            }
+
+        }
+
+
+    }*/
 
     // returns an ArrayList of the headers of the file
     private ArrayList<String> outputHeaders() {
@@ -46,7 +76,7 @@ public class Parser {
             reader.close();
 
             // array storing the column headers
-            String[] array = parseLineNoEdgeCases(line);
+            String[] array = parseLineNoEdgeCases(line).toArray(new String[0]);
 
             // adds delimited line to the ArrayList
             Collections.addAll(headerList, array);
@@ -89,14 +119,14 @@ public class Parser {
                 // each line separated by a different delimiter
                 String[] lineList;
 
-                // reading every line of the file
-                while (line != null) {
+                // reading every line of the file until reaching EOF or empty lines
+                while (line != null && !line.equals("")) {
 
                     // getting the array of separated items in the line
-                    lineList = parseLineNoEdgeCases(line);
-
+                    lineList = parseLineNoEdgeCases(line).toArray(new String[0]);
 
                     // adds the item to the array list
+                    System.out.println(lineList[pos]);
                     columnRecordList.add(lineList[pos]);
 
                     // reads the next line
@@ -120,10 +150,10 @@ public class Parser {
 
     // given an array of strings an a char c, returns
     // a string with all of the elements of the array separated by c
-    private String arrayToStringDelimiter(String[] strArray, char c){
+    private String arrayToStringDelimiter(ArrayList<String> strArray, char c) {
 
         String returnString = "";
-        for(String str : strArray)
+        for (String str : strArray)
             returnString += str + c;
 
         return returnString;
@@ -159,6 +189,7 @@ public class Parser {
         }
     }
 
+
     private void commands() {
 
         /* Options
@@ -177,7 +208,7 @@ public class Parser {
 
             System.out.println("1. Output to Console all the headers (separated by new lines)");
             System.out.println("2. Output to Console all the records in a column (given a String header)");
-            System.out.println("3. Replace Delimiter to one of your choice. New file will be created.");
+            System.out.println("3. Replace delimiter to one of your choice. New file will be created.");
             System.out.println("0. Exit");
 
             command = scanner.nextInt();
@@ -214,11 +245,67 @@ public class Parser {
         } while (command != 0);
     }
 
+    private ArrayList<String> untilDelimiter(String str) {
+
+        String[] list = str.split(",");
+
+        /*for (String s : list)
+            System.out.println(s);*/
+
+        boolean inQuotation = false;
+        ArrayList<String> arrayList = new ArrayList<>();
+        String inQuoteString = "";
+
+        for (int i = 0; i < list.length; i++) {
+
+            if (!(list[i].charAt(0) == '\"') && !inQuotation) {
+
+                if (inQuoteString != "") {
+                    arrayList.add(inQuoteString);
+                    inQuoteString = "";
+                }
+
+                arrayList.add(list[i]);
+            } else {
+
+                if (list[i].charAt(list[i].length() - 1) == '\"') {
+                    inQuoteString += list[i];
+                    inQuotation = false;
+                } else {
+                    inQuoteString += list[i] + ",";
+                    inQuotation = true;
+                }
+
+                /*if(inQuoteString.charAt(inQuoteString.length() - 1) == '\"')
+                    inQuotation = false;
+                else
+                    inQuotation = true;*/
+            }
+        }
+
+        /*Iterator iter = arrayList.iterator();
+
+        while(iter.hasNext())
+            System.out.println(iter.next());*/
+
+        return
+                arrayList;
+    }
+
+
     public static void main(String[] args) {
 
-        Parser parse = new Parser("UCLfinals.csv");
+        String file = "books_quoteInDouble.csv";
 
+        /*Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the CSV filename to be parsed: ");
+        file = scanner.next();*/
+
+        Parser parse = new Parser(file);
         parse.commands();
+
+//        String line = "axy,br,\"ci,d,fg\",ep";
+//        untilDelimiter(line);
 
     }
 }
