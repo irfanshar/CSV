@@ -1,7 +1,10 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class ParsingLibrary {
+
+    // == GOING FROM CSV TO DATA ==
 
     // Method returns a List of a parsed CSV line
     public static List<String> parseLine(String str){
@@ -106,32 +109,97 @@ public class ParsingLibrary {
     private static void testParseLine(){
 
 
-        /*String strArray[] = {"Aziz,\"100, 500, 000\"    , hello, \"good,bye\"",
+        String strArray[] = {"Aziz,\"100, 500, 000\"    , hello, \"good,bye\"",
                 "Aziz, 100",
                 "Aziz,\"100,000.00\"",
                 "Aziz,\"100\"",
                 "Aziz,\"He is a \"\"HERO\"\"\"",
-                "Aziz,\"He is a \"\"HERO\"\" not a \"\"villain\"\", sike\""};*/
-
-        String strArray[] = {
-                "Statistical Learning Theory,\"Vapnik, Vladimir\",data_science,228,\n"
+                "Aziz,\"He is a \"\"HERO\"\" not a \"\"villain\"\", sike\""
         };
+
+        /*String strArray[] = {
+                "Statistical Learning Theory,\"Vapnik, Vladimir\",data_science,228,\n"
+        };*/
 
         for(String str : strArray) {
             System.out.println("Input: ");
             System.out.println(str);
 
             System.out.println("Got: ");
-            parseLine(str);
+            List<String> separatedList = parseLine(str);
+
+            Iterator iter = separatedList.iterator();
+
+            while(iter.hasNext()) {
+                System.out.println(iter.next());
+            }
 
             System.out.println();
             System.out.println();
         }
     }
 
+
+    // == GOING FROM DATA TO CSV ==
+
+    private static String addQuotesAroundQuotes(String str){
+        StringBuilder retStr = new StringBuilder();
+
+        for(int i = 0; i < str.length(); i++){
+
+            if(str.charAt(i) != '\"')
+                retStr.append(str.charAt(i));
+            else
+                retStr.append("\"").append(str.charAt(i));
+
+        }
+
+        return retStr.toString();
+    }
+
+    private static void dataToCSV(List<String> dataList){
+
+        StringBuilder retStr = new StringBuilder();
+
+        for(String s : dataList) {
+
+            if (!s.contains("\"")) {
+                if (!s.contains(","))
+                    retStr.append(s).append(",");
+                else
+                    retStr.append("\"").append(s).append("\"").append(",");
+            }else{
+                String str = addQuotesAroundQuotes(s);
+                str = "\"" + str + "\"";
+                retStr.append(str).append(",");
+            }
+        }
+
+
+        System.out.println(retStr.substring(0, retStr.length() - 1));
+    }
+
+    private static void testDatatoCSV(){
+
+        List<List<String>> dataList = new ArrayList<>();
+
+        dataList.add(parseLine("Aziz,\"100, 500, 000\"    , hello, \"good,bye\""));
+        dataList.add(parseLine("Aziz, 100"));
+        dataList.add(parseLine("Aziz,\"100,000.00\""));
+        dataList.add(parseLine("Aziz,\"100\""));
+        dataList.add(parseLine("Aziz,\"He is a \"\"HERO\"\"\""));
+        dataList.add(parseLine("Aziz,\"He is a \"\"HERO\"\" not a \"\"villain\"\", sike\""));
+
+        for(List<String> list : dataList)
+            dataToCSV(list);
+
+    }
+
     public static void main(String[] args) {
 
-        testParseLine();
+//        testParseLine();
+        testDatatoCSV();
+
 
     }
 }
