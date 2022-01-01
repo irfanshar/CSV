@@ -1,8 +1,6 @@
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
+import java.util.List;
 import java.util.Scanner;
 
 public class Parser {
@@ -11,7 +9,7 @@ public class Parser {
     String fileName;
 
     // arraylist of the headers
-    ArrayList<String> headers;
+    List<String> headers;
 
     // == constructor ==
     public Parser(String fileName) {
@@ -22,20 +20,19 @@ public class Parser {
     // == ArrayList extra methods ==
 
     // outputs all elements of a String ArrayList
-    private void outputStringArrayList(ArrayList<String> arrayList) {
+    private void outputStringArrayList(List<String> arrayList) {
         for (String str : arrayList)
             System.out.println(str);
     }
 
 
     // == parsing methods ==
-
     // parses a line with comma separated values with no
     // edge cases
-    //TODO base cases
-    private ArrayList<String> parseLineNoEdgeCases(String line) {
+    // TODO DELETE (useless now)
+    /*private List<String> parseLineNoEdgeCases(String line) {
 
-        /*String[] parsedLine = line.split(",");
+        String[] parsedLine = line.split(",");
         ArrayList<String> arrayList = new ArrayList<>();
 
         // to clean up trailing and leading spaces
@@ -43,43 +40,68 @@ public class Parser {
             parsedLine[i] = parsedLine[i].strip();
             arrayList.add(parsedLine[i]);
         }
-        return arrayList;*/
-
-        return untilDelimiter(line);
-    }
-
-    /*private ArrayList<String> parseLineEdgeCases(String line) {
-
-        ArrayList<String> returnList = new ArrayList<>();
-        String str = "";
-
-        for(int i = 0; i < line.length(); i++){
-            if(str.charAt(i) != '\"'){
-
-
-
-            }
-
-        }
-
-
+        return arrayList;
     }*/
 
-    // returns an ArrayList of the headers of the file
-    private ArrayList<String> outputHeaders() {
+    // parses a line with edge cases (DOES NOT WORK)
+    /*private ArrayList<String> untilDelimiter(String str) {
 
-        ArrayList<String> headerList = new ArrayList<>();
+        String[] list = str.split(",");
+
+        *//*for (String s : list)
+            System.out.println(s);*//*
+
+        boolean inQuotation = false;
+        ArrayList<String> arrayList = new ArrayList<>();
+        String inQuoteString = "";
+
+        for (int i = 0; i < list.length; i++) {
+
+            if (!(list[i].charAt(0) == '\"') && !inQuotation) {
+
+                if (inQuoteString != "") {
+                    arrayList.add(inQuoteString);
+                    inQuoteString = "";
+                }
+
+                arrayList.add(list[i]);
+            } else {
+
+                if (list[i].charAt(list[i].length() - 1) == '\"') {
+                    inQuoteString += list[i];
+                    inQuotation = false;
+                } else {
+                    inQuoteString += list[i] + ",";
+                    inQuotation = true;
+                }
+
+                *//*if(inQuoteString.charAt(inQuoteString.length() - 1) == '\"')
+                    inQuotation = false;
+                else
+                    inQuotation = true;*//*
+            }
+        }
+
+        *//*Iterator iter = arrayList.iterator();
+
+        while(iter.hasNext())
+            System.out.println(iter.next());*//*
+
+        return arrayList;
+    }*/
+
+
+    // returns an ArrayList of the headers of the file
+    private List<String> outputHeaders() {
+
+        List<String> headerList = new ArrayList<>();
 
         try {
             BufferedReader reader = new BufferedReader(new FileReader(this.fileName));
             String line = reader.readLine();
             reader.close();
 
-            // array storing the column headers
-            String[] array = parseLineNoEdgeCases(line).toArray(new String[0]);
-
-            // adds delimited line to the ArrayList
-            Collections.addAll(headerList, array);
+            headerList = ParsingLibrary.parseLine(line);
 
         } catch (IOException e) {
 
@@ -94,9 +116,9 @@ public class Parser {
     // method returns an ArrayList of Strings containing
     // all elements in a column (excluding the header)
     // returns null if there is no column with that header
-    private ArrayList<String> columnRecord(String column) {
+    private List<String> columnRecord(String column) {
 
-        ArrayList<String> columnRecordList = null;
+        List<String> columnRecordList = null;
 
         // there is no column with String column
         if (!headers.contains(column))
@@ -123,10 +145,10 @@ public class Parser {
                 while (line != null && !line.equals("")) {
 
                     // getting the array of separated items in the line
-                    lineList = parseLineNoEdgeCases(line).toArray(new String[0]);
+                    lineList = ParsingLibrary.parseLine(line).toArray(new String[0]);
 
                     // adds the item to the array list
-                    System.out.println(lineList[pos]);
+                    // System.out.println(lineList[pos]);
                     columnRecordList.add(lineList[pos]);
 
                     // reads the next line
@@ -148,15 +170,15 @@ public class Parser {
         return columnRecordList;
     }
 
-    // given an array of strings an a char c, returns
+    // given a List of strings and a char c, returns
     // a string with all of the elements of the array separated by c
-    private String arrayToStringDelimiter(ArrayList<String> strArray, char c) {
+    private String listToStringDelimiter(List<String> strArray, char c) {
 
-        String returnString = "";
+        StringBuilder returnString = new StringBuilder();
         for (String str : strArray)
-            returnString += str + c;
+            returnString.append(str).append(c);
 
-        return returnString;
+        return returnString.toString();
     }
 
     // takes a file and changes the delimiter and writes that new file
@@ -174,7 +196,7 @@ public class Parser {
             String line = reader.readLine();
 
             while (line != null) {
-                writer.write(arrayToStringDelimiter(parseLineNoEdgeCases(line), c));
+                writer.write(listToStringDelimiter(ParsingLibrary.parseLine(line), c));
                 writer.newLine();
                 line = reader.readLine();
             }
@@ -224,7 +246,7 @@ public class Parser {
                 case 2:
                     System.out.println("Which column would you like to see records for?: ");
 
-                    ArrayList<String> recordList = columnRecord(scanner.next());
+                    List<String> recordList = columnRecord(scanner.next());
 
                     if (recordList != null)
                         outputStringArrayList(recordList);
@@ -245,52 +267,6 @@ public class Parser {
         } while (command != 0);
     }
 
-    private ArrayList<String> untilDelimiter(String str) {
-
-        String[] list = str.split(",");
-
-        /*for (String s : list)
-            System.out.println(s);*/
-
-        boolean inQuotation = false;
-        ArrayList<String> arrayList = new ArrayList<>();
-        String inQuoteString = "";
-
-        for (int i = 0; i < list.length; i++) {
-
-            if (!(list[i].charAt(0) == '\"') && !inQuotation) {
-
-                if (inQuoteString != "") {
-                    arrayList.add(inQuoteString);
-                    inQuoteString = "";
-                }
-
-                arrayList.add(list[i]);
-            } else {
-
-                if (list[i].charAt(list[i].length() - 1) == '\"') {
-                    inQuoteString += list[i];
-                    inQuotation = false;
-                } else {
-                    inQuoteString += list[i] + ",";
-                    inQuotation = true;
-                }
-
-                /*if(inQuoteString.charAt(inQuoteString.length() - 1) == '\"')
-                    inQuotation = false;
-                else
-                    inQuotation = true;*/
-            }
-        }
-
-        /*Iterator iter = arrayList.iterator();
-
-        while(iter.hasNext())
-            System.out.println(iter.next());*/
-
-        return
-                arrayList;
-    }
 
 
     public static void main(String[] args) {

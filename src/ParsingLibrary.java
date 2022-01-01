@@ -3,14 +3,9 @@ import java.util.List;
 
 public class ParsingLibrary {
 
-    private static void parseLine(String str){
+    public static List<String> parseLine(String str){
+
         String[] parsed = str.split(",");
-
-       /* for (int i = 0; i < parsed.length; i++) {
-            // parsed[i] = parsed[i].strip();
-            System.out.println(parsed[i]);
-        }*/
-
         List<String> finalParsed = new ArrayList<>();
 
         int j = 0;
@@ -19,9 +14,6 @@ public class ParsingLibrary {
             if(!parsed[j].contains("\""))
                 finalParsed.add(parsed[j].strip());
             else{
-//                String toAdd = quotationAppender(parsed, j);
-//                toAdd = toAdd.strip().substring(1, toAdd.strip().length() - 1);
-//                // finalParsed.add(toAdd);
 
                 String toAdd = quotationAppender(parsed, j);
                 toAdd = toAdd.strip();
@@ -43,38 +35,40 @@ public class ParsingLibrary {
             j++;
         }
 
-        for (String s : finalParsed)
-            System.out.println(s);
+        /*for (String s : finalParsed)
+            System.out.println(s);*/
 
+        return finalParsed;
     }
 
     private static String helper(String str){
 
-        String newStr = "";
+        StringBuilder newStr = new StringBuilder();
         int i = 0;
 
         while(i < str.length()){
             if(str.charAt(i) != '\"')
-                newStr += str.charAt(i);
+                newStr.append(str.charAt(i));
             else{
                 if(((i + 1) < str.length()) && (str.charAt(i + 1) != '\"'))
-                    newStr += str.charAt(i);
+                    newStr.append(str.charAt(i));
 
                 // if we reached the last character and its a quotation
                 if(((i + 1) == str.length()) && (str.charAt(i) == '\"'))
-                    newStr += str.charAt(i);
+                    newStr.append(str.charAt(i));
             }
             i++;
         }
 
-        return newStr;
+        return newStr.toString();
     }
 
     // method goes through array and pieces together a String
     // given a position to where the quotation started
     private static String quotationAppender(String[] strArray, int pos){
 
-        String returnString = "";
+        // copy of semi-working code
+        /*String returnString = "";
         int i = pos;
 
         for(; i < strArray.length; i++){
@@ -86,23 +80,41 @@ public class ParsingLibrary {
 
         returnString = returnString + strArray[i];
 
-        return returnString.strip();
+        return returnString.strip();*/
+
+        StringBuilder returnString = new StringBuilder();
+        int i = pos;
+        int countQuotes = 0;
+        String s;
+
+        for(; i < strArray.length; i++){
+            s = strArray[i].strip();
+            countQuotes += (int) s.chars().filter(ch -> ch == '\"').count();
+
+            if(countQuotes % 2 == 0)
+                break;
+
+            returnString.append(strArray[i]).append(",");
+        }
+
+        returnString.append(strArray[i]);
+
+        return returnString.toString().strip();
     }
 
     private static void testParseLine(){
 
 
-        String strArray[] = {"Aziz,\"100, 500, 000\"    , hello, \"good,bye\"",
+        /*String strArray[] = {"Aziz,\"100, 500, 000\"    , hello, \"good,bye\"",
                 "Aziz, 100",
                 "Aziz,\"100,000.00\"",
                 "Aziz,\"100\"",
                 "Aziz,\"He is a \"\"HERO\"\"\"",
-                "Aziz,\"He is a \"\"HERO\"\" not a \"\"villain\"\", sike\""};
+                "Aziz,\"He is a \"\"HERO\"\" not a \"\"villain\"\", sike\""};*/
 
-       /* String strArray[] = {
-                "Aziz,\"He is a \"\"HERO\"\"\""
-                , "Aziz,\"He is a \"\"HERO\"\" not a \"\"villain\"\", sike\""
-        };*/
+        String strArray[] = {
+                "Statistical Learning Theory,\"Vapnik, Vladimir\",data_science,228,\n"
+        };
 
         for(String str : strArray) {
             System.out.println("Input: ");
