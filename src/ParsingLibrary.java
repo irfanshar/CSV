@@ -3,6 +3,7 @@ import java.util.List;
 
 public class ParsingLibrary {
 
+    // Method returns a List of a parsed CSV line
     public static List<String> parseLine(String str){
 
         String[] parsed = str.split(",");

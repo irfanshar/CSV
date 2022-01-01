@@ -12,7 +12,7 @@ public class Parser {
     List<String> headers;
 
     // == constructor ==
-    public Parser(String fileName) {
+    public Parser(String fileName) throws IOException {
         this.fileName = fileName;
         this.headers = outputHeaders();
     }
@@ -91,32 +91,33 @@ public class Parser {
     }*/
 
 
-    // returns an ArrayList of the headers of the file
-    private List<String> outputHeaders() {
+    // Method returns a List of the headers of the file
+    // May throws IOException when reading file
+    private List<String> outputHeaders() throws IOException {
 
         List<String> headerList = new ArrayList<>();
 
-        try {
+//        try {
             BufferedReader reader = new BufferedReader(new FileReader(this.fileName));
             String line = reader.readLine();
             reader.close();
 
             headerList = ParsingLibrary.parseLine(line);
 
-        } catch (IOException e) {
+        /*} catch (IOException e) {
 
             // program exits if file could not be read
             e.printStackTrace();
             System.exit(-1);
-        }
+        }*/
 
         return headerList;
     }
 
-    // method returns an ArrayList of Strings containing
+    // Method returns an List of Strings containing
     // all elements in a column (excluding the header)
-    // returns null if there is no column with that header
-    private List<String> columnRecord(String column) {
+    // Returns null if there is no column with that header
+    private List<String> columnRecord(String column) throws IOException {
 
         List<String> columnRecordList = null;
 
@@ -125,7 +126,7 @@ public class Parser {
             System.out.println("The file does not contain a column: " + column);
         else {
 
-            try {
+//            try {
                 BufferedReader reader = new BufferedReader(new FileReader(fileName));
 
                 // initializes the ArrayList
@@ -158,11 +159,11 @@ public class Parser {
                 // closes the buffered reader
                 reader.close();
 
-            } catch (IOException e) {
-                // program exits if file could not be read
-                e.printStackTrace();
-                System.exit(-1);
-            }
+//            } catch (IOException e) {
+//                // program exits if file could not be read
+//                e.printStackTrace();
+//                System.exit(-1);
+//            }
         }
 
         // returns null if there is a problem reading the file
@@ -183,9 +184,9 @@ public class Parser {
 
     // takes a file and changes the delimiter and writes that new file
     // returns true if successful, false if unsuccessful
-    private boolean changeDelimiter(char c, String newFileName) {
+    private boolean changeDelimiter(char c, String newFileName) throws IOException {
 
-        try {
+//        try {
 
             // used to write to the new file
             BufferedWriter writer = new BufferedWriter(new FileWriter(newFileName));
@@ -205,10 +206,10 @@ public class Parser {
             writer.close();
 
             return true;
-        } catch (IOException e) {
+       /* } catch (IOException e) {
             e.printStackTrace();
             return false;
-        }
+        }*/
     }
 
 
@@ -246,7 +247,12 @@ public class Parser {
                 case 2:
                     System.out.println("Which column would you like to see records for?: ");
 
-                    List<String> recordList = columnRecord(scanner.next());
+                    List<String> recordList = null;
+                    try {
+                        recordList = columnRecord(scanner.next());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
                     if (recordList != null)
                         outputStringArrayList(recordList);
@@ -256,7 +262,13 @@ public class Parser {
                     System.out.println("Please input a character to replace the current delimiter: ");
                     char c = scanner.next().charAt(0);
                     System.out.println("Please enter the name of the new file: ");
-                    changeDelimiter(c, scanner.next());
+
+                    try {
+                        changeDelimiter(c, scanner.next());
+                    } catch (IOException e) {
+                        System.out.println("There was a problem processing: " + fileName);
+                        e.printStackTrace();
+                    }
                     break;
 
                 default:
@@ -273,15 +285,13 @@ public class Parser {
 
         String file = "books_quoteInDouble.csv";
 
-        /*Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter the CSV filename to be parsed: ");
-        file = scanner.next();*/
+        try {
+            Parser parse = new Parser(file);
+            parse.commands();
 
-        Parser parse = new Parser(file);
-        parse.commands();
-
-//        String line = "axy,br,\"ci,d,fg\",ep";
-//        untilDelimiter(line);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 }
