@@ -3,6 +3,7 @@ package com.irs.csv;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class DelimitedParserTest {
@@ -30,13 +31,13 @@ public class DelimitedParserTest {
         };
 
         for (int i = 0; i < input.length; i++) {
+            final List<String> expected = Arrays.asList(output[i]);
+
             final String str = input[i];
-            List<String> strings = delimitedParser.parseLine(',', str);
+            List<String> actual = delimitedParser.parseLine(',', str);
 
-            final String[] expected = output[i];
-            final String[] actual = strings.toArray(new String[0]);
 
-            Assertions.assertArrayEquals(expected, actual);
+            Assertions.assertEquals(expected, actual);
         }
     }
 
