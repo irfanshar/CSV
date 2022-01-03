@@ -157,7 +157,7 @@ public class ParsingLibrary {
         return retStr.toString();
     }
 
-    private static void dataToCSV(List<String> dataList){
+    public static void dataToCSV(List<String> dataList){
 
         StringBuilder retStr = new StringBuilder();
 
@@ -197,8 +197,8 @@ public class ParsingLibrary {
 
     public static void main(String[] args) {
 
-//        testParseLine();
-        testDatatoCSV();
+        testParseLine();
+//        testDatatoCSV();
 
 
     }

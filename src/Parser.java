@@ -126,8 +126,7 @@ public class Parser {
             System.out.println("The file does not contain a column: " + column);
         else {
 
-//            try {
-                BufferedReader reader = new BufferedReader(new FileReader(fileName));
+            try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
 
                 // initializes the ArrayList
                 columnRecordList = new ArrayList<>();
@@ -156,14 +155,7 @@ public class Parser {
                     line = reader.readLine();
                 }
 
-                // closes the buffered reader
-                reader.close();
-
-//            } catch (IOException e) {
-//                // program exits if file could not be read
-//                e.printStackTrace();
-//                System.exit(-1);
-//            }
+            }
         }
 
         // returns null if there is a problem reading the file
