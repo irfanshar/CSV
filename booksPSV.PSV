@@ -79,10 +79,10 @@ Radiowaril Bhashane & Shrutika|Deshpande, P L|nonfiction|213|Mauj
 Gun Gayin Awadi|Deshpande, P L|nonfiction|212|Mauj
 Aghal Paghal|Deshpande, P L|nonfiction|212|Mauj
 Maqta-e-Ghalib|Garg, Sanjay|fiction|221|Mauj
-Beyond Degrees|nonfiction|222|HarperCollins|
+Beyond Degrees||nonfiction|222|HarperCollins
 Manasa|Kale, V P|nonfiction|213|Mauj
 India from Midnight to Milennium|Tharoor, Shashi|history|198|Penguin
-World's Greatest Trials, The|history|210||
+World's Greatest Trials, The||history|210|
 Great Indian Novel, The|Tharoor, Shashi|fiction|198|Penguin
 O Jerusalem!|Lapierre, Dominique|history|217|vikas
 City of Joy, The|Lapierre, Dominique|fiction|177|vikas
@@ -102,7 +102,7 @@ Doctor in the Nude|Gordon, Richard|fiction|179|Penguin
 Down and Out in Paris & London|Orwell, George|nonfiction|179|Penguin
 Identity & Violence|Sen, Amartya|philosophy|219|Penguin
 Beyond the Three Seas|Dalrymple, William|history|197|Random House
-World's Greatest Short Stories, The|fiction|217|Jaico|
+World's Greatest Short Stories, The||fiction|217|Jaico
 Talking Straight|Iacoca, Lee|nonfiction|175|
 Maugham's Collected Short Stories, Vol 3|Maugham, William S|fiction|171|Vintage
 Phantom of Manhattan, The|Forsyth, Frederick|fiction|180|
@@ -112,12 +112,12 @@ Great War for Civilization, The|Fisk, Robert|history|197|HarperCollins
 We the Living|Rand, Ayn|fiction|178|Penguin
 Artist and the Mathematician, The|Aczel, Amir|science|186|HighStakes
 History of Western Philosophy|Russell, Bertrand|philosophy|213|Routledge
-Selected Short Stories|fiction|215|Jaico|
+Selected Short Stories||fiction|215|Jaico
 Rationality & Freedom|Sen, Amartya|economics|213|Springer
 Clash of Civilizations and Remaking of the World Order|Huntington, Samuel|history|228|Simon&Schuster
 Uncommon Wisdom|Capra, Fritjof|nonfiction|197|Fontana
 One|Bach, Richard|nonfiction|172|Dell
-Karl Marx Biography|nonfiction|162||
+Karl Marx Biography||nonfiction|162|
 To Sir With Love|Braithwaite|fiction|197|Penguin
 Half A Life|Naipaul, V S|fiction|196|
 Discovery of India, The|Nehru, Jawaharlal|history|230|
@@ -128,7 +128,7 @@ Veil: Secret Wars of the CIA|Woodward, Bob|history|171|
 Char Shabda|Deshpande, P L|nonfiction|214|
 Rosy is My Relative|Durrell, Gerald|fiction|176|
 Moon and Sixpence, The|Maugham, William S|fiction|180|
-Political Philosophers|philosophy|162||
+Political Philosophers||philosophy|162|
 Short History of the World, A|Wells, H G|history|197|
 Trembling of a Leaf, The|Maugham, William S|fiction|205|
 Doctor on the Brain|Gordon, Richard|fiction|204|
@@ -137,22 +137,22 @@ Pattern Classification|Duda, Hart|data_science|241|
 From Beirut to Jerusalem|Friedman, Thomas|history|202|
 Code Book, The|Singh, Simon|science|197|
 Age of the Warrior, The|Fisk, Robert|history|197|
-Final Crisis|comic|257||
-Killing Joke, The|comic|283||
-Flashpoint|comic|265||
-Batman Earth One|comic|265||
-Crisis on Infinite Earths|comic|258||
+Final Crisis||comic|257|
+Killing Joke, The||comic|283|
+Flashpoint||comic|265|
+Batman Earth One||comic|265|
+Crisis on Infinite Earths||comic|258|
 Numbers Behind Numb3rs, The|Devlin, Keith|science|202|
-Superman Earth One - 1|comic|259||
-Superman Earth One - 2|comic|258||
-Justice League: Throne of Atlantis|comic|258||
-Justice League: The Villain's Journey|comic|258||
-Death of Superman, The|comic|258||
-History of the DC Universe|comic|258||
-Batman: The Long Halloween|comic|258||
+Superman Earth One - 1||comic|259|
+Superman Earth One - 2||comic|258|
+Justice League: Throne of Atlantis||comic|258|
+Justice League: The Villain's Journey||comic|258|
+Death of Superman, The||comic|258|
+History of the DC Universe||comic|258|
+Batman: The Long Halloween||comic|258|
 Life in Letters, A|Steinbeck, John|nonfiction|196|
 Information, The|Gleick, James|science|233|
-Journal of Economics, vol 106 No 3|economics|235||
+Journal of Economics, vol 106 No 3||economics|235|
 Elements of Information Theory|Thomas, Joy|data_science|229|
 Power Electronics - Rashid|Rashid, Muhammad|computer_science|235|
 Power Electronics - Mohan|Mohan, Ned|computer_science|237|
@@ -178,7 +178,7 @@ Think Complexity|Downey, Allen|data_science|230|
 Devil's Advocate, The|West, Morris|fiction|178|
 Ayn Rand Answers|Rand, Ayn|philosophy|203|
 Philosophy: Who Needs It|Rand, Ayn|philosophy|171|
-World's Great Thinkers, The|philosophy|189||
+World's Great Thinkers, The||philosophy|189|
 Data Analysis with Open Source Tools|Janert, Phillip|data_science|230|
 Broca's Brain|Sagan, Carl|science|174|
 Men of Mathematics|Bell, E T|mathematics|217|
@@ -195,16 +195,16 @@ India's Legal System|Nariman|nonfiction|177|
 More Tears to Cry|Sassoon, Jean|fiction|235|
 Ropemaker, The|Dickinson, Peter|fiction|196|
 Angels & Demons|Brown, Dan|fiction|170|
-Judge, The|fiction|170||
-Attorney, The|fiction|170||
+Judge, The||fiction|170|
+Attorney, The||fiction|170|
 Prince, The|Machiavelli|philosophy|173|
 Eyeless in Gaza|Huxley, Aldous|fiction|180|
 Tales of Beedle the Bard|Rowling, J K|fiction|184|
 Girl with the Dragon Tattoo|Larsson, Steig|fiction|179|
 Girl who kicked the Hornet's Nest|Larsson, Steig|fiction|179|
 Girl who played with Fire|Larsson, Steig|fiction|179|
-Batman Handbook|comic|270||
-Murphy's Law|nonfiction|178||
+Batman Handbook||comic|270|
+Murphy's Law||nonfiction|178|
 Structure and Randomness|Tao, Terence|mathematics|252|
 Image Processing with MATLAB|Eddins, Steve|signal_processing|241|
 Animal Farm|Orwell, George|fiction|180|

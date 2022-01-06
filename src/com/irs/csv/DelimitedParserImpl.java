@@ -1,6 +1,7 @@
 package com.irs.csv;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -46,6 +47,84 @@ public class DelimitedParserImpl implements DelimitedParser {
             }
             j++;
         }
+
+        return finalParsed;
+    }
+
+    public List<String> parseLine2(char delimiter, String str, int headerSize) {
+
+
+        String[] parsed = str.split(delimiter == '|' ? "\\|" : ("" + delimiter));
+
+        int i = 0;
+
+
+        List<String> finalParsed = new ArrayList<>();
+
+        int j = 0;
+        while (j < parsed.length) {
+
+            if (parsed[j] != null) {
+                if (!parsed[j].contains("\""))
+                    finalParsed.add(parsed[j].strip());
+                else {
+
+                    String toAdd = quotationAppender(parsed, j);
+                    toAdd = toAdd.strip();
+
+                    if ((toAdd.charAt(0) == '\"') && (toAdd.charAt(toAdd.length() - 1) == '\"'))
+                        toAdd = toAdd.substring(1, toAdd.length() - 1);
+                    else if (toAdd.charAt(0) == '\"')
+                        toAdd = toAdd.substring(1);
+                    else
+                        toAdd = toAdd.substring(0, toAdd.length() - 1);
+
+                    if (!toAdd.contains("\""))
+                        finalParsed.add(toAdd);
+                    else {
+                        finalParsed.add(helper(toAdd));
+                    }
+                    j += toAdd.chars().filter(ch -> ch == ',').count();
+                }
+            } else {
+                finalParsed.add(null);
+            }
+
+            j++;
+        }
+
+       /* if (parsed.length < headerSize) {
+            String[] parsedProper = new String[headerSize];
+            int length = 0;
+            i = 0;
+
+            for (String s : finalParsed) {
+                length += s.length();
+
+                if (length < (str.length() - 1)) {
+                    if ((str.charAt(length) == delimiter) && (str.charAt(length + 1) == delimiter)) {
+                        parsedProper[i++] = s;
+                        parsedProper[i++] = null;
+                        length += 2;
+                    } else {
+                        parsedProper[i++] = s;
+                        length += 1;
+                    }
+                } else {
+                    if ((length != str.length()) && (str.charAt(length) == delimiter)) {
+                        parsedProper[i++] = s;
+                        parsedProper[i] = null;
+                    }
+
+                }
+
+//                i++;
+            }
+
+//            parsed = parsedProper
+            return Arrays.asList(parsedProper);
+        }
+*/
 
         return finalParsed;
     }
@@ -123,15 +202,19 @@ public class DelimitedParserImpl implements DelimitedParser {
 
         for (String s : dataList) {
 
-            if (!s.contains("\"")) {
-                if (!s.contains(delimiter + ""))
-                    retStr.append(s).append(delimiter);
-                else
-                    retStr.append("\"").append(s).append("\"").append(delimiter);
+            if (s != null) {
+                if (!s.contains("\"")) {
+                    if (!s.contains(delimiter + ""))
+                        retStr.append(s).append(delimiter);
+                    else
+                        retStr.append("\"").append(s).append("\"").append(delimiter);
+                } else {
+                    String str = addQuotesAroundQuotes(s);
+                    str = "\"" + str + "\"";
+                    retStr.append(str).append(delimiter);
+                }
             } else {
-                String str = addQuotesAroundQuotes(s);
-                str = "\"" + str + "\"";
-                retStr.append(str).append(delimiter);
+                retStr.append(delimiter);
             }
         }
 

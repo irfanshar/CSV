@@ -13,12 +13,24 @@ public class ParseLineTest {
 
         DelimitedParser delimitedParser = new DelimitedParserImpl();
 
-        final String[] input = {"Aziz,\"100, 500, 000\"    , hello, \"good,bye\"",
+        final String[] input = {
+                "Aziz,\"100, 500, 000\"    , hello, \"good,bye\"",
                 "Aziz, 100",
                 "Aziz,\"100,000.00\"",
                 "Aziz,\"100\"",
                 "Aziz,\"He is a \"\"HERO\"\"\"",
-                "Aziz,\"He is a \"\"HERO\"\" not a \"\"villain\"\", sike\""
+                "Aziz,\"He is a \"\"HERO\"\" not a \"\"villain\"\", sike\"",
+                "One,,Two"
+        };
+
+        final int[] inputHeaderSizes = {
+                4,
+                2,
+                2,
+                2,
+                2,
+                2,
+                3
         };
 
         final String[][] output = {
@@ -28,13 +40,14 @@ public class ParseLineTest {
                 , new String[] {"Aziz", "100"}
                 , new String[] {"Aziz", "He is a \"HERO\""}
                 , new String[] {"Aziz", "He is a \"HERO\" not a \"villain\", sike"}
+                , new String[] {"One", "", "Two"}
         };
 
         for (int i = 0; i < input.length; i++) {
             final List<String> expected = Arrays.asList(output[i]);
 
             final String str = input[i];
-            List<String> actual = delimitedParser.parseLine(',', str);
+            List<String> actual = delimitedParser.parseLine2(',', str, inputHeaderSizes[i]);
 
 
             Assertions.assertEquals(expected, actual);

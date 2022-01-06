@@ -2,6 +2,7 @@ package com.irs.csv;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ParserImpl implements Parser {
@@ -29,7 +30,7 @@ public class ParserImpl implements Parser {
     // May throws IOException when reading file
     public List<String> getHeaders() throws IOException {
 
-        List<String> headerList = new ArrayList<>();
+        List<String> headerList;
 
         // closes the file if an error occurs
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
@@ -38,6 +39,7 @@ public class ParserImpl implements Parser {
             reader.close();
 
             headerList = delimitedParser.parseLine(delimiter, line);
+
         }
 
         return headerList;
@@ -68,17 +70,20 @@ public class ParserImpl implements Parser {
                 line = reader.readLine();
 
                 // each line separated by a different delimiter
-                String[] lineList;
+//                String[] lineList;
 
                 // reading every line of the file until reaching EOF or empty lines
                 while (line != null && !line.equals("")) {
 
                     // getting the array of separated items in the line
-                    lineList = delimitedParser.parseLine(delimiter, line).toArray(new String[0]);
+                    List<String> lineListAsList = delimitedParser.parseLine2(delimiter, line, headers.size());
+//                    lineListAsList.removeAll(Collections.singleton(null));
+//                    lineList = lineListAsList.toArray(new String[0]);
 
                     // adds the item to the array list
                     // System.out.println(lineList[pos]);
-                    columnRecordList.add(lineList[pos]);
+//                    columnRecordList.add(lineList[pos]);
+                    columnRecordList.add(lineListAsList.get(pos));
 
                     // reads the next line
                     line = reader.readLine();
@@ -117,7 +122,7 @@ public class ParserImpl implements Parser {
             String line = reader.readLine();
 
             while (line != null) {
-                writer.write(delimitedParser.dataToDelimiterStr(newDelimiter, delimitedParser.parseLine(delimiter, line), headers.size()));
+                writer.write(delimitedParser.dataToDelimiterStr(newDelimiter, delimitedParser.parseLine2(delimiter, line, headers.size()), headers.size()));
                 writer.newLine();
                 line = reader.readLine();
             }
@@ -125,20 +130,21 @@ public class ParserImpl implements Parser {
     }
 
     public static void main(String[] args) {
-//        try {
-//            Parser parser = new ParserImpl("books_quoteInDouble.csv", ',');
-//            Parser parser = new ParserImpl("booksPSV.psv", '|');
-//
-//            parser.save('|', "booksPSV.PSV");
+        try {
+            Parser parser = new ParserImpl("booksPSV.psv", '|');
 
-        DelimitedParser delimitedParser = new DelimitedParserImpl();
-        List<String> list = delimitedParser.parseLine(',',"Batman Handbook,,comic,270,");
+            parser.save(',', "booksCSV.csv");
 
-        delimitedParser.dataToDelimiterStr(',', list, 5);
+        /*DelimitedParser delimitedParser = new DelimitedParserImpl();
+        List<String> list = delimitedParser.parseLine2(',',"\"World's Greatest Trials, The\",,history,210,", 5);
+*/
+        //Addings commas at the end for missing values, but should be adding them in th right spot
+
+//        String s= delimitedParser.dataToDelimiterStr(',', list, 5);
 
         System.out.println();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
