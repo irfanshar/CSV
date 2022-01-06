@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
 
-public class DelimitedParserTest {
+public class ParseLineTest {
 
     @Test
     public void testParser(){
@@ -40,5 +40,6 @@ public class DelimitedParserTest {
             Assertions.assertEquals(expected, actual);
         }
     }
+
 
 }

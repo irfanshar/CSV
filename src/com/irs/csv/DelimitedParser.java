@@ -1,5 +1,4 @@
 package com.irs.csv;
-
 import java.util.List;
 
 public interface DelimitedParser {
