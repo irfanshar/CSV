@@ -14,32 +14,32 @@ public class DelimitedParserImpl implements DelimitedParser {
         String[] parsed = new String[stringTokenizer.countTokens()];
 
         int i = 0;
-        while(stringTokenizer.hasMoreTokens()){
+        while (stringTokenizer.hasMoreTokens()) {
             parsed[i++] = stringTokenizer.nextToken();
         }
 
         List<String> finalParsed = new ArrayList<>();
 
         int j = 0;
-        while(j < parsed.length) {
+        while (j < parsed.length) {
 
-            if(!parsed[j].contains("\""))
+            if (!parsed[j].contains("\""))
                 finalParsed.add(parsed[j].strip());
-            else{
+            else {
 
                 String toAdd = quotationAppender(parsed, j);
                 toAdd = toAdd.strip();
 
-                if((toAdd.charAt(0) == '\"') && (toAdd.charAt(toAdd.length() - 1) == '\"'))
+                if ((toAdd.charAt(0) == '\"') && (toAdd.charAt(toAdd.length() - 1) == '\"'))
                     toAdd = toAdd.substring(1, toAdd.length() - 1);
-                else if(toAdd.charAt(0) == '\"')
+                else if (toAdd.charAt(0) == '\"')
                     toAdd = toAdd.substring(1);
                 else
                     toAdd = toAdd.substring(0, toAdd.length() - 1);
 
-                if(!toAdd.contains("\""))
+                if (!toAdd.contains("\""))
                     finalParsed.add(toAdd);
-                else{
+                else {
                     finalParsed.add(helper(toAdd));
                 }
                 j += toAdd.chars().filter(ch -> ch == ',').count();
@@ -50,20 +50,20 @@ public class DelimitedParserImpl implements DelimitedParser {
         return finalParsed;
     }
 
-    private String helper(String str){
+    private String helper(String str) {
 
         StringBuilder newStr = new StringBuilder();
         int i = 0;
 
-        while(i < str.length()){
-            if(str.charAt(i) != '\"')
+        while (i < str.length()) {
+            if (str.charAt(i) != '\"')
                 newStr.append(str.charAt(i));
-            else{
-                if(((i + 1) < str.length()) && (str.charAt(i + 1) != '\"'))
+            else {
+                if (((i + 1) < str.length()) && (str.charAt(i + 1) != '\"'))
                     newStr.append(str.charAt(i));
 
                 // if we reached the last character and its a quotation
-                if(((i + 1) == str.length()) && (str.charAt(i) == '\"'))
+                if (((i + 1) == str.length()) && (str.charAt(i) == '\"'))
                     newStr.append(str.charAt(i));
             }
             i++;
@@ -72,7 +72,7 @@ public class DelimitedParserImpl implements DelimitedParser {
         return newStr.toString();
     }
 
-    private String quotationAppender(String[] strArray, int pos){
+    private String quotationAppender(String[] strArray, int pos) {
 
 
         StringBuilder returnString = new StringBuilder();
@@ -80,11 +80,11 @@ public class DelimitedParserImpl implements DelimitedParser {
         int countQuotes = 0;
         String s;
 
-        for(; i < strArray.length; i++){
+        for (; i < strArray.length; i++) {
             s = strArray[i].strip();
             countQuotes += (int) s.chars().filter(ch -> ch == '\"').count();
 
-            if(countQuotes % 2 == 0)
+            if (countQuotes % 2 == 0)
                 break;
 
             returnString.append(strArray[i]).append(",");
@@ -96,7 +96,7 @@ public class DelimitedParserImpl implements DelimitedParser {
     }
 
 
-    @Override
+    /*@Override
     public String dataToDelimiterStr(char delimiter, List<String> dataList) {
         StringBuilder retStr = new StringBuilder();
 
@@ -115,14 +115,44 @@ public class DelimitedParserImpl implements DelimitedParser {
         }
 
         return retStr.substring(0, retStr.length() - 1);
-    }
+    }*/
 
-    private String addQuotesAroundQuotes(String str){
+    @Override
+    public String dataToDelimiterStr(char delimiter, List<String> dataList, int headersSize) {
         StringBuilder retStr = new StringBuilder();
 
-        for(int i = 0; i < str.length(); i++){
+        for (String s : dataList) {
 
-            if(str.charAt(i) != '\"')
+            if (!s.contains("\"")) {
+                if (!s.contains(delimiter + ""))
+                    retStr.append(s).append(delimiter);
+                else
+                    retStr.append("\"").append(s).append("\"").append(delimiter);
+            } else {
+                String str = addQuotesAroundQuotes(s);
+                str = "\"" + str + "\"";
+                retStr.append(str).append(delimiter);
+            }
+        }
+
+        retStr.deleteCharAt(retStr.length() - 1);
+
+        int sizeOfList = dataList.size();
+        while (sizeOfList < headersSize) {
+            retStr.append(delimiter);
+            sizeOfList++;
+
+        }
+
+        return retStr.toString();
+    }
+
+    private String addQuotesAroundQuotes(String str) {
+        StringBuilder retStr = new StringBuilder();
+
+        for (int i = 0; i < str.length(); i++) {
+
+            if (str.charAt(i) != '\"')
                 retStr.append(str.charAt(i));
             else
                 retStr.append("\"").append(str.charAt(i));

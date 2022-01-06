@@ -37,7 +37,7 @@ public class DataToDelimiterStrTest {
 
             final String expected = output[i];
 
-            final String actual = delimitedParser.dataToDelimiterStr(',', inputList);
+            final String actual = delimitedParser.dataToDelimiterStr(',', inputList, inputList.size());
 
             Assertions.assertEquals(expected, actual);
 

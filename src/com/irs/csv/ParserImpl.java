@@ -94,14 +94,14 @@ public class ParserImpl implements Parser {
 
 
     // given a List of strings and a char c, returns
-    // a string with all of the elements of the array separated by c
+    // a string with all of the elements of the array separated by c(except for the last)
     private String listToStringDelimiter(List<String> strArray, char c) {
 
         StringBuilder returnString = new StringBuilder();
         for (String str : strArray)
             returnString.append(str).append(c);
 
-        return returnString.toString();
+        return returnString.toString().substring(0, returnString.length() - 1);
     }
 
     // takes a file and changes the delimiter and writes that new file
@@ -117,11 +117,28 @@ public class ParserImpl implements Parser {
             String line = reader.readLine();
 
             while (line != null) {
-                writer.write(listToStringDelimiter(delimitedParser.parseLine(delimiter, line), newDelimiter));
+                writer.write(delimitedParser.dataToDelimiterStr(newDelimiter, delimitedParser.parseLine(delimiter, line), headers.size()));
                 writer.newLine();
                 line = reader.readLine();
             }
         }
     }
 
+    public static void main(String[] args) {
+//        try {
+//            Parser parser = new ParserImpl("books_quoteInDouble.csv", ',');
+//            Parser parser = new ParserImpl("booksPSV.psv", '|');
+//
+//            parser.save('|', "booksPSV.PSV");
+
+        DelimitedParser delimitedParser = new DelimitedParserImpl();
+        List<String> list = delimitedParser.parseLine(',',"Batman Handbook,,comic,270,");
+
+        delimitedParser.dataToDelimiterStr(',', list, 5);
+
+        System.out.println();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+    }
 }
